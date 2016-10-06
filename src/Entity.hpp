@@ -2,10 +2,11 @@
 #define ENTITY_HPP
 #include <stdint.h>
 #include "Object.h"
-#include "EntityComponent.hpp"
+#include "Transform.hpp"
 #include <vector>
 #include <memory>
 #include <typeinfo>
+
 class Entity : public Object
 {
 public:
@@ -16,16 +17,17 @@ public:
 	template <class T> void AddComponent();
 	template <class T> std::shared_ptr<T> GetComponent();
 	bool RemoveComponent(EntityComponent * component);
+	std::shared_ptr<Transform> transform();
 private:
 	std::string m_name;
 	//using vector until I implement a simple linked list, double list in std is overkill
 	std::vector<std::shared_ptr<EntityComponent>> components;
 };
 
-template<class T>
-inline void Entity::AddComponent()
+template<class T> inline void Entity::AddComponent()
 {
 	components.push_back(std::make_shared<T>());
+	components[components.size() - 1]->container = std::make_shared<Entity>(*this);
 }
 
 template<class T> inline std::shared_ptr<T> Entity::GetComponent()
