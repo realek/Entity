@@ -10,6 +10,7 @@ Transform::Transform() : EntityComponent()
 Transform::~Transform()
 {
 
+	m_parent = nullptr;
 }
 
 glm::mat4 Transform::LocalTransformMatrix()
@@ -20,5 +21,21 @@ glm::mat4 Transform::LocalTransformMatrix()
 
 glm::mat4 Transform::GlobalTransformMatrix()
 {
-	return glm::mat4();
+	if (m_parent != nullptr)
+		return m_parent->transform()->GlobalTransformMatrix()*LocalTransformMatrix();
+	else
+		return LocalTransformMatrix();
+}
+
+void Transform::SetParent(std::shared_ptr<Entity> Nparent)
+{
+	if (Nparent == nullptr)
+		m_parent = nullptr;
+	else
+		m_parent = Nparent;
+}
+
+std::shared_ptr<Entity> Transform::parent()
+{
+	return m_parent;
 }

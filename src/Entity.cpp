@@ -2,6 +2,7 @@
 Entity::Entity() : Object()
 {
 	m_name = "Entity";
+	AddComponent<Transform>();
 }
 
 Entity::~Entity()
@@ -36,4 +37,3 @@ std::shared_ptr<Transform> Entity::transform()
 {
 	return std::dynamic_pointer_cast<Transform>(components[0]);
 }
-

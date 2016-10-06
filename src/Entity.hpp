@@ -7,6 +7,7 @@
 #include <memory>
 #include <typeinfo>
 
+class Transform;
 class Entity : public Object
 {
 public:
@@ -18,9 +19,9 @@ public:
 	template <class T> std::shared_ptr<T> GetComponent();
 	bool RemoveComponent(EntityComponent * component);
 	std::shared_ptr<Transform> transform();
+
 private:
 	std::string m_name;
-	//using vector until I implement a simple linked list, double list in std is overkill
 	std::vector<std::shared_ptr<EntityComponent>> components;
 };
 
